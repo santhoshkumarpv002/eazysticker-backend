@@ -1,1 +1,1 @@
-# eazysticker-backend
+# store-backend
