@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.store_backend.entity.User;
 import com.example.store_backend.service.UserService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+
 @RestController
 @RequestMapping("/api/users")
+@Validated
 public class UserController {
     @Autowired
     private UserService userService;
@@ -29,23 +34,25 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<String> greeting(){
+    public ResponseEntity<String> greeting() {
         return ResponseEntity.ok("welcome");
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable @Min(value = 1, message = "ID must be greater than 0") Long id) {
         Optional<User> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(
+            @PathVariable @Min(value = 1, message = "ID must be greater than 0") Long id,
+            @Valid @RequestBody User userDetails) {
         User updatedUser = userService.updateUser(id, userDetails);
         if (updatedUser != null) {
             return ResponseEntity.ok(updatedUser);
@@ -55,7 +62,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable @Min(value = 1, message = "ID must be greater than 0") Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
