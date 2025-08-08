@@ -52,10 +52,17 @@
         </dependency>
 
         <!-- SQL Server JDBC Driver -->
-        <dependency>
+        <!-- <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>12.10.1.jre11</version>
+        </dependency> -->
+
+        <!-- H2 Database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- DevTools for hot reload (optional in prod) -->
