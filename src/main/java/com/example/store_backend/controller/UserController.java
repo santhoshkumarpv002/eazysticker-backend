@@ -33,6 +33,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+
     @GetMapping("/")
     public ResponseEntity<String> greeting() {
         return ResponseEntity.ok("welcome");
